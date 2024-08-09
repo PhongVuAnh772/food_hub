@@ -1,5 +1,8 @@
 package com.food_hub
 
+import org.devio.rn.splashscreen.SplashScreen
+import android.content.res.Configuration
+import android.os.Bundle
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.fabricEnabled
@@ -15,8 +18,19 @@ class MainActivity : ReactActivity() {
 
   /**
    * Returns the instance of the [ReactActivityDelegate]. We use [DefaultReactActivityDelegate]
-   * which allows you to enable New Architecture with a single boolean flags [fabricEnabled]
+   * which allows you to enable New Architecture with a single boolean flag [fabricEnabled]
    */
   override fun createReactActivityDelegate(): ReactActivityDelegate =
       DefaultReactActivityDelegate(this, mainComponentName, fabricEnabled)
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+    when (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
+      Configuration.UI_MODE_NIGHT_YES -> setTheme(R.style.DarkTheme)
+      Configuration.UI_MODE_NIGHT_NO -> setTheme(R.style.LightTheme)
+      else -> setTheme(R.style.LightTheme)
+    }
+
+    SplashScreen.show(this)
+    super.onCreate(savedInstanceState)
+  }
 }
